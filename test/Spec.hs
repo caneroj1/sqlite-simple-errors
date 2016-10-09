@@ -49,7 +49,7 @@ checkCheckConstraint = Test "Check Constraint - Age"
                             (Left $ SQLConstraintError Check "Test")
                             test
   where
-    test conn = runDBAction (execute conn insertSQL sqlData)
+    test conn = runDBAction $ execute conn insertSQL sqlData
     sqlData :: (Text, Int)
     sqlData = ("name", 0)
 
@@ -58,6 +58,6 @@ checkForeignKeyConstraint = Test "Check Foreign Key Constraint - TestID"
                                  (Left $ SQLConstraintError ForeignKey "")
                                  test
   where
-    test conn = runDBAction (execute conn insertOtherSQL sqlData)
+    test conn = runDBAction $ execute conn insertOtherSQL sqlData
     sqlData :: (Text, Int)
     sqlData = ("other", 10)
