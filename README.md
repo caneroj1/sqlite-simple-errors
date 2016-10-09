@@ -17,8 +17,7 @@ data Constraint = NotNull
                 | Check
   deriving (Show, Eq)
 
-data SQLiteResponse = Success
-                    | SQLConstraintError Constraint Text
+data SQLiteResponse = SQLConstraintError Constraint Text
                     | SQLFormatError FormatError
                     | SQLResultError ResultError
                     | SQLOtherError  SQLError
