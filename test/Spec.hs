@@ -14,7 +14,8 @@ main :: IO ()
 main = executeTestRunner [checkNotNullConstraintName,
                           checkNotNullConstraintAge,
                           checkUniqueConstraint,
-                          checkCheckConstraint]
+                          checkCheckConstraint,
+                          checkForeignKeyConstraint]
 
 checkNotNullConstraintName :: Test (DatabaseResponse ())
 checkNotNullConstraintName = Test "Not Null Constraint - Name"
@@ -43,7 +44,6 @@ checkUniqueConstraint = Test "Unique Constraint - Name"
     sqlData :: (Text, Int)
     sqlData = ("name", 10)
 
-
 checkCheckConstraint :: Test (DatabaseResponse ())
 checkCheckConstraint = Test "Check Constraint - Age"
                             (Left $ SQLConstraintError Check "Test")
@@ -52,3 +52,12 @@ checkCheckConstraint = Test "Check Constraint - Age"
     test conn = runDBAction (execute conn insertSQL sqlData)
     sqlData :: (Text, Int)
     sqlData = ("name", 0)
+
+checkForeignKeyConstraint :: Test (DatabaseResponse ())
+checkForeignKeyConstraint = Test "Check Foreign Key Constraint - TestID"
+                                 (Left $ SQLConstraintError ForeignKey "")
+                                 test
+  where
+    test conn = runDBAction (execute conn insertOtherSQL sqlData)
+    sqlData :: (Text, Int)
+    sqlData = ("other", 10)

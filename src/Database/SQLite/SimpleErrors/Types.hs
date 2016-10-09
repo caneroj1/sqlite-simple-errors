@@ -6,8 +6,7 @@ import Data.Typeable
 import Database.SQLite.Simple (FormatError, ResultError, SQLError)
 
 data Constraint = NotNull
-                | Default
-                | PrimaryKey
+                | ForeignKey
                 | Unique
                 | Check
   deriving (Show, Eq)

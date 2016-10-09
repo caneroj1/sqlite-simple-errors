@@ -7,12 +7,14 @@ import Database.SQLite.Simple
 import Database.SQLite.SimpleErrors.Types
 import Text.Parsec
 import Text.Parsec.Text
-import Debug.Trace
 
 type SQLiteParser = Parser SQLiteResponse
 
+constraintNameOnly :: String -> Parser ()
+constraintNameOnly n = void $ string (n ++ " constraint failed")
+
 constraintName :: String -> Parser ()
-constraintName n = void $ string (n ++ " constraint failed:") >> spaces
+constraintName n = constraintNameOnly n >> char ':' >> spaces
 
 getRest :: Parser Text
 getRest = Text.pack <$> many1 anyChar
@@ -20,17 +22,20 @@ getRest = Text.pack <$> many1 anyChar
 parseConstraint :: String -> Constraint -> SQLiteParser
 parseConstraint n c = constraintName n >> SQLConstraintError c <$> getRest
 
+parseConstraintNoDetails :: String -> Constraint -> SQLiteParser
+parseConstraintNoDetails n c =
+  constraintNameOnly n >> return (SQLConstraintError c Text.empty)
+
 constraintParser :: Parsec Text () SQLiteResponse
 constraintParser =
-  parseConstraint "PRIMARY KEY" PrimaryKey <|>
-  parseConstraint "NOT NULL"    NotNull    <|>
-  parseConstraint "DEFAULT"     Default    <|>
-  parseConstraint "UNIQUE"      Unique     <|>
+  parseConstraintNoDetails "FOREIGN KEY" ForeignKey <|>
+  parseConstraint "NOT NULL"    NotNull             <|>
+  parseConstraint "UNIQUE"      Unique              <|>
   parseConstraint "CHECK"       Check
 
 parseError :: SQLError -> SQLiteResponse
 parseError e@SQLError{sqlErrorDetails = details} =
-  either (\_ -> SQLOtherError e) id $ parse constraintParser "" (trace (show details) details)
+  either (\_ -> SQLOtherError e) id $ parse constraintParser "" details
 
 receiveSQLError :: SQLError -> SQLiteResponse
 receiveSQLError e@SQLError{sqlError = ErrorConstraint} = parseError e

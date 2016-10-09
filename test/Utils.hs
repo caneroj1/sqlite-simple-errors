@@ -1,5 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Utils
 (
@@ -44,11 +45,16 @@ newtype TestRunner a = TestRunner {
 executeTestRunner :: (Eq a, Show a) => [Test a] -> IO ()
 executeTestRunner tests = print =<< execStateT (runSuite $ runTests tests) empty
 
+setupDB :: Connection -> IO ()
+setupDB conn = execute_ conn createTableSQL     >>
+               execute_ conn createNextTableSQL >>
+               execute_ conn "PRAGMA foreign_keys = ON"
+
 runTests :: (Eq a, Show a) => [Test a] -> TestRunner ()
 runTests []           = liftIO $ putStrLn "Done with tests"
 runTests (test:tests) = do
   conn <- liftIO $ open ":memory:"
-  liftIO $ execute_ conn createTableSQL
+  liftIO $ setupDB conn
   got  <- liftIO $ testAction test conn
   liftIO $ close conn
   logResults got test
