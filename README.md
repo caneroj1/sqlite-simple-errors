@@ -42,7 +42,9 @@ If we try to insert a record into our database where we provide a ```NULL``` val
 result <- runDBAction $ execute conn "INSERT INTO People (name, age) VALUES (?, ?)" ( (Nothing, 10) :: (Maybe Text, Int) )
 ```
 
-where ```result``` is ```Left $ SQLConstraintError NotNull "People.name"```
+where ```result``` is ```Left $ SQLConstraintError NotNull "People.name"```.
+
+The typical error you would get from ```sqlite-simple``` would be a ```SQLError``` whose error context is ```"SQLite3 returned ErrorConstraint while attempting to perform step: NOT NULL constraint failed: People.name"```.
 
 ### Unique Constraint
 If we try to insert a record into our database that violates a ```UNIQUE``` constraint:
@@ -52,6 +54,10 @@ _      <- runDBAction $ execute conn "INSERT INTO People (name, age) VALUES (?, 
 result <- runDBAction $ execute conn "INSERT INTO People (name, age) VALUES (?, ?)" ( ("Joe", 10) :: (Text, Int) )
 ```
 
+where ```result``` is ```Left $ SQLConstraintError Unique "People.name"```.
+
+The typical error you would get from ```sqlite-simple``` would be a ```SQLError``` whose error context is ```"SQLite3 returned ErrorConstraint while attempting to perform step: UNIQUE constraint failed: People.name"```.
+
 ### Check Constraint
 If we try to insert a record that violates some condition we've specified through ```CHECK```:
 
@@ -59,7 +65,9 @@ If we try to insert a record that violates some condition we've specified throug
 result <- runDBAction $ execute conn "INSERT INTO People (name, age) VALUES (?, ?)" ( ("Joe", 0) :: (Text, Int) )
 ```
 
-where ```result``` is ```Left $ SQLConstraintError Check "People"```
+where ```result``` is ```Left $ SQLConstraintError Check "People"```.
+
+The typical error you would get from ```sqlite-simple``` would be a ```SQLError``` whose error context is ```"SQLite3 returned ErrorConstraint while attempting to perform step: CHECK constraint failed: People"```.
 
 ### Foreign Key Constraint
 Let's make a new table where we can have a foreign key.
@@ -78,4 +86,6 @@ If we try to insert a record into this table without a corresponding entry in th
 result <- runDBAction $ execute conn "INSERT INTO Jobs (title, person_id) VALUES (?, ?)" (("coder", -1) :: (Text, Int))
 ```
 
-where ```result``` is ```Left $ SQLConstraintError ForeignKey ""```
+where ```result``` is ```Left $ SQLConstraintError ForeignKey ""```.
+
+The typical error you would get from ```sqlite-simple``` would be a ```SQLError``` whose error context is ```"SQLite3 returned ErrorConstraint while attempting to perform step: FOREIGN KEY constraint failed"```.
