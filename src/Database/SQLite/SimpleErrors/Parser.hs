@@ -1,5 +1,6 @@
 module Database.SQLite.SimpleErrors.Parser where
 
+import Control.Applicative ((<$>))
 import Control.Monad
 import           Data.Text                (Text)
 import qualified Data.Text as Text hiding (Text)
