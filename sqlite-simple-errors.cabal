@@ -1,5 +1,5 @@
 name:                sqlite-simple-errors
-version:             0.4.0.0
+version:             0.5.0.0
 synopsis:            Wrapper around errors from sqlite-simple
 description:         Wrapper around errors from sqlite-simple. Get easy-to-pattern-match
                      data types for constraint errors.

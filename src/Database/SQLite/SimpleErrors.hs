@@ -1,3 +1,13 @@
+{-|
+Module      : Database.SQLite.SimpleErrors.Types
+Description : Main module
+Copyright   : (c) Joseph Canero, 2016
+License     : BSD-3
+Maintainer  : jmc41493@gmail.com
+Stability   : experimental
+Portability : POSIX
+-}
+
 module Database.SQLite.SimpleErrors
 (
   DatabaseResponse

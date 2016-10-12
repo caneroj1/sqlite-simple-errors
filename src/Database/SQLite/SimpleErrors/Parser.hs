@@ -1,3 +1,13 @@
+{-|
+Module      : Database.SQLite.SimpleErrors.Parser
+Description : Parsing logic
+Copyright   : (c) Joseph Canero, 2016
+License     : BSD-3
+Maintainer  : jmc41493@gmail.com
+Stability   : experimental
+Portability : POSIX
+-}
+
 module Database.SQLite.SimpleErrors.Parser
 (
   receiveSQLError

@@ -1,3 +1,13 @@
+{-|
+Module      : Database.SQLite.SimpleErrors.Types
+Description : Types
+Copyright   : (c) Joseph Canero, 2016
+License     : BSD-3
+Maintainer  : jmc41493@gmail.com
+Stability   : experimental
+Portability : POSIX
+-}
+
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module Database.SQLite.SimpleErrors.Types where
