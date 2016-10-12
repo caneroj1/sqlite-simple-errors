@@ -1,4 +1,6 @@
 # sqlite-simple-errors
+<a href="https://hackage.haskell.org/package/sqlite-simple-errors">Hackage</a>
+<br>
 Light wrapper around errors from sqlite-simple to make working with constraint errors a bit easier.
 
 The wrapper function, ```runDBAction``` allows you to run your database code and get the errors returned to you:
