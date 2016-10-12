@@ -1,7 +1,8 @@
 name:                sqlite-simple-errors
 version:             0.3.0.0
 synopsis:            Wrapper around errors from sqlite-simple
-description:         Wrapper around errors from sqlite-simple
+description:         Wrapper around errors from sqlite-simple. Get easy-to-pattern-match
+                     data types for constraint errors.
 homepage:            https://github.com/caneroj1/sqlite-simple-errors
 license:             BSD3
 license-file:        LICENSE
@@ -18,10 +19,10 @@ library
   exposed-modules:     Database.SQLite.SimpleErrors
                      , Database.SQLite.SimpleErrors.Parser
                      , Database.SQLite.SimpleErrors.Types
-  build-depends:       base >= 4.7 && < 5
+  build-depends:       base >= 4.6            && < 5
                      , sqlite-simple >= 0.4.9 && < 0.5.0
-                     , text >= 1.2.2.1 && < 1.2.3
-                     , parsec >= 3.1.11 && < 3.2
+                     , text >= 1.2.2.1        && < 1.2.3
+                     , parsec >= 3.1.9        && < 3.2
   default-language:    Haskell2010
 
 test-suite sqlite-simple-errors-test
