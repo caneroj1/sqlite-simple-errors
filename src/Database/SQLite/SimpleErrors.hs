@@ -9,8 +9,14 @@ import Database.SQLite.Simple (FormatError, ResultError, SQLError)
 import Database.SQLite.SimpleErrors.Types
 import Database.SQLite.SimpleErrors.Parser
 
+-- | Type synonym for what is returned by runDBAction. Either a SQLiteResponse
+-- or another type.
 type DatabaseResponse a = Either SQLiteResponse a
 
+-- | runDBAction accepts an IO action to perform some database logic using
+-- sqlite-simple. We capture any errors that are returned and wrap them
+-- in our SQLiteResponse type. If any other type of exception is raised, it is
+-- rethrown.
 runDBAction :: IO a -> IO (DatabaseResponse a)
 runDBAction sqlAction = do
   res <- try sqlAction
