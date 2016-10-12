@@ -11,6 +11,7 @@ module Utils
 import Control.Monad.State
 import Database.SQLite.Simple (open, close, execute_, Connection)
 import SQLUtils
+import System.Exit
 
 data Test a = Test {
   testName   :: String
@@ -43,7 +44,11 @@ newtype TestRunner a = TestRunner {
 } deriving (Monad, Functor, Applicative, MonadState Results, MonadIO)
 
 executeTestRunner :: (Eq a, Show a) => [Test a] -> IO ()
-executeTestRunner tests = print =<< execStateT (runSuite $ runTests tests) empty
+executeTestRunner tests = do
+  results <- execStateT (runSuite $ runTests tests) empty
+  print results
+  when (failed results > 0) exitFailure
+  exitSuccess
 
 setupDB :: Connection -> IO ()
 setupDB conn = execute_ conn createTableSQL     >>

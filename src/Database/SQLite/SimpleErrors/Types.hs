@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveDataTypeable #-}
+
 module Database.SQLite.SimpleErrors.Types where
 
 import Control.Exception
