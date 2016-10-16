@@ -31,7 +31,7 @@ runDBAction :: IO a -> IO (DatabaseResponse a)
 runDBAction sqlAction = do
   res <- try sqlAction
   case res of
-    (Left e)  -> return . Left $ convertException e
+    (Left e)  -> return . Left $! convertException e
     (Right e) -> return $ Right e
 
 convertException :: SomeException -> SQLiteResponse
